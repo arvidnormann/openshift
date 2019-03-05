@@ -21,21 +21,15 @@
     <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>28.0.0.redhat-00001</version>
+       <version>23</version>
+       <relativePath />
     </parent>
-
     <groupId>org.jboss.eap.quickstarts</groupId>
     <artifactId>quickstart-parent</artifactId>
-    <!--
-        Maintain separation between the artifact id and the version to help prevent
-        merge conflicts between commits changing the GA and those changing the V.
-        -->
-    <version>master</version>
-
+    <version>7.1.0.GA</version>
     <packaging>pom</packaging>
-
-    <name>Quickstart: Parent</name>
-    <description>Quickstart's parent</description>
+    <name>${qs.name.prefix} Parent</name>
+    <description>JBoss EAP Quickstarts Parent</description>
     <url>http://www.jboss.org/jdf/quickstarts/get-started/</url>
 
     <licenses>
@@ -47,89 +41,104 @@
     </licenses>
 
     <properties>
+        <qs.name.prefix>JBoss EAP Quickstart:</qs.name.prefix>
         <root.dir>${project.basedir}</root.dir>
         <jboss.home.name>EAP7_HOME</jboss.home.name>
         <product.name>JBoss EAP</product.name>
-        <product.version>7.2.0.GA</product.version>
         <!-- A base list of dependency and plug-in version used in the various quick starts. -->
-        <version.wildfly.maven.plugin>2.0.0.Final</version.wildfly.maven.plugin>
-        <version.org.wildfly.checkstyle-config>1.0.7.Final</version.org.wildfly.checkstyle-config>
-        <version.org.wildfly.quickstarts.documentation.plugin>2.0.0.Beta1</version.org.wildfly.quickstarts.documentation.plugin>
+        <version.wildfly.maven.plugin>1.2.1.Final</version.wildfly.maven.plugin>
+
         <!-- other plug-in versions -->
         <version.com.mycyla.license>3.0</version.com.mycyla.license>
-        <version.checkstyle>8.5</version.checkstyle>
-        <version.jaxws-tools-maven-plugin>1.2.2.Final</version.jaxws-tools-maven-plugin>
+
         <!-- Explicitly declaring the source encoding eliminates the following
             message: [WARNING] Using platform encoding (UTF-8 actually) to copy
             filtered resources, i.e. build is platform dependent! -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!-- Version of BOMs
-        note: a SNAPSHOT version *requires* checkout of BOMs at https://github.com/jbossas/eap-boms and build through "mvn clean install"
-        -->
-        <version.server.bom>7.2.0.GA</version.server.bom>
+        <version.spring.framework>4.3.10.RELEASE</version.spring.framework>
+        <!-- EAP component version management BOM -->
+        <version.server.bom>7.1.0.GA</version.server.bom>
+        
+        <version.jboss.spec.javaee.7.0>1.1.0.Final-redhat-3</version.jboss.spec.javaee.7.0>
 
-        <!-- Versions of dependencies on server's core -->
-        <version.commons-io>2.5.0.redhat-3</version.commons-io>
-        <version.org.apache.httpcomponents.httpclient>4.5.2.redhat-2</version.org.apache.httpcomponents.httpclient>
-        <version.org.apache.xerces>2.12.0.SP02-redhat-00001</version.org.apache.xerces>
-        <version.org.jboss.msc.jboss-msc>1.4.5.Final-redhat-00001</version.org.jboss.msc.jboss-msc>
-        <version.org.slf4j>1.7.22.redhat-2</version.org.slf4j>
+        <version.jaxws-tools-maven-plugin>1.2.0.Final</version.jaxws-tools-maven-plugin>
 
-        <!-- Versions of dependencies on server -->
-        <version.com.fasterxml.jackson>2.9.5.redhat-2</version.com.fasterxml.jackson>
-        <version.com.h2database>1.4.193.redhat-2</version.com.h2database>
-        <version.com.sun.istack>3.0.5.redhat-1</version.com.sun.istack>
-        <version.org.bouncycastle>1.60.0.redhat-00001</version.org.bouncycastle>
-        <version.org.jboss.ws.cxf>5.2.4.Final-redhat-00001</version.org.jboss.ws.cxf>
-        <version.sun.saaj-impl>1.3.16.SP1-redhat-6</version.sun.saaj-impl>
-
-        <!-- Other versions of dependencies -->
-        <version.arquillian.angularjs.graphene>1.2.0.Beta1</version.arquillian.angularjs.graphene>
-        <version.json.path>2.0.0</version.json.path>
-        <version.org.json>20150729</version.org.json>
+        <!-- Other dependency versions -->
         <version.ro.isdc.wro4j>1.7.9</version.ro.isdc.wro4j>
-        <version.spring.framework>4.3.14.RELEASE</version.spring.framework>
-
-        <jboss.developer.drupal.url>http://developer-rhdp-drupal.web.stage.ext.phx2.redhat.com/</jboss.developer.drupal.url>
+        <httpclient.version>4.5.2.redhat-1</httpclient.version>
+        <version.org.apache.commons.commons-lang3>3.5</version.org.apache.commons.commons-lang3>
+        <version.h2db>1.4.193.redhat-2</version.h2db>
+        <version.org.wildfly.checkstyle-config>1.0.6.Final</version.org.wildfly.checkstyle-config>
         <linkXRef>false</linkXRef>
     </properties>
 
     <dependencyManagement>
         <dependencies>
 
+            <!-- Add H2 dependency for embedded testing database -->
             <dependency>
-                <groupId>org.jboss.eap</groupId>
-                <artifactId>wildfly-ejb-client-bom</artifactId>
-                <version>${version.server.bom}</version>
-                <type>pom</type>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${version.h2db}</version>
             </dependency>
-
             <dependency>
-                <groupId>org.jboss.eap</groupId>
-                <artifactId>wildfly-jms-client-bom</artifactId>
-                <version>${version.server.bom}</version>
-                <type>pom</type>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.5.0.redhat-2</version>
+                <scope>compile</scope>
             </dependency>
-
+     
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${version.org.apache.commons.commons-lang3}</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>${version.org.apache.httpcomponents.httpclient}</version>
+                <version>${httpclient.version}</version>
             </dependency>
             <!-- JBoss distributes a complete set of Java EE APIs including a Bill
                 of Materials (BOM). A BOM specifies the versions of a "stack" (or a collection)
                 of artifacts. We use this here so that we always get the correct versions
-                of artifacts. Here we use the jboss-eap-javaee8-with-tools stack (you can
+                of artifacts. Here we use the jboss-eap-javaee7-with-tools stack (you can
                 read this as the JBoss stack of the Java EE APIs, with some extras tools
                 for your project, such as Arquillian for testing) -->
             <dependency>
                 <groupId>org.jboss.bom</groupId>
-                <artifactId>jboss-eap-javaee8-with-tools</artifactId>
+                <artifactId>jboss-eap-javaee7-with-tools</artifactId>
                 <version>${version.server.bom}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- Define the version of the JBoss Java EE APIs we want to use -->
+            <!-- JBoss distributes a complete set of Java EE APIs including
+               a Bill of Materials (BOM). A BOM specifies the versions of a "stack" (or
+               a collection) of artifacts. We use this here so that we always get the correct
+               versions of artifacts. Here we use the jboss-javaee-7.0 stack (you can
+               read this as the JBoss stack of the Java EE APIs). You can actually
+               use this stack with any version of JBoss EAP that implements Java EE. -->
+            <dependency>
+                <groupId>org.jboss.spec</groupId>
+                <artifactId>jboss-javaee-7.0</artifactId>
+                <version>${version.jboss.spec.javaee.7.0}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -146,26 +155,6 @@
     -->
     <repositories>
         <repository>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>jboss-enterprise-maven-repository</id>
-            <url>https://maven.repository.redhat.com/ga/</url>
-        </repository>
-        <repository>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>jboss-enterprise-maven-repository-ea</id>
-            <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
-        </repository>
-        <repository>
             <id>jboss-public-repository-group</id>
             <name>JBoss Public Maven Repository Group</name>
             <url>https://repository.jboss.org/nexus/content/groups/public/</url>
@@ -179,6 +168,16 @@
                 <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
+        <repository>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>jboss-enterprise-maven-repository</id>
+            <url>https://maven.repository.redhat.com/ga/</url>
+        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -191,16 +190,6 @@
             </snapshots>
             <id>jboss-enterprise-maven-repository</id>
             <url>https://maven.repository.redhat.com/ga/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>jboss-enterprise-maven-repository-ea</id>
-            <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
         </pluginRepository>
         <pluginRepository>
             <id>jboss-public-repository-group</id>
@@ -235,6 +224,8 @@
                         <exclude>**/*.sql</exclude>
                         <exclude>**/LICENSE*</exclude>
                         <exclude>**/license*</exclude>
+                        <!-- Exclude specific Quickstarts -->
+                        <exclude>petclinic-spring/**</exclude>
                         <!-- Javascrip Libraries -->
                         <exclude>**/jquery*</exclude>
                         <exclude>**/angular*</exclude>
@@ -253,10 +244,6 @@
                         <headerDefinition>dist/headerdefinition.xml</headerDefinition>
                     </headerDefinitions>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
             </plugin>
         </plugins>
         <pluginManagement>
@@ -405,6 +392,13 @@
                 <module>bean-validation</module>
                 <module>bean-validation-custom-constraint</module>
                 <module>bmt</module>
+                <module>cdi-alternative</module>
+                <module>cdi-decorator</module>
+                <module>cdi-injection</module>
+                <module>cdi-interceptors</module>
+                <module>cdi-portable-extension</module>
+                <module>cdi-stereotype</module>
+                <module>cdi-veto</module>
                 <module>cmt</module>
                 <module>contacts-jquerymobile</module>
                 <module>ejb-asynchronous</module>
@@ -413,6 +407,7 @@
                 <module>ejb-multi-server</module>
                 <module>ejb-security</module>
                 <module>ejb-security-context-propagation</module>
+                <module>ejb-security-interceptors</module>
                 <module>ejb-security-jaas</module>
                 <module>ejb-security-programmatic-auth</module>
                 <module>ejb-throws-exception</module>
@@ -443,8 +438,11 @@
                 <module>kitchensink</module>
                 <module>kitchensink-angularjs</module>
                 <module>kitchensink-ear</module>
+                <module>kitchensink-html5-mobile</module>
                 <module>kitchensink-jsp</module>
                 <module>kitchensink-ml</module>
+                <module>kitchensink-ml-ear</module>
+                <module>log4j</module>
                 <module>logging</module>
                 <module>logging-tools</module>
                 <module>mail</module>
@@ -452,15 +450,21 @@
                 <module>messaging-clustering-singleton</module>
                 <module>numberguess</module>
                 <module>payment-cdi-event</module>
-                <module>resteasy-jaxrs-client</module>
+                <module>picketlink-sts</module>
                 <module>servlet-async</module>
                 <module>servlet-filterlistener</module>
                 <module>servlet-security</module>
                 <module>shopping-cart</module>
+                <module>shrinkwrap-resolver</module>
                 <module>spring-greeter</module>
+                <module>spring-kitchensink-asyncrequestmapping</module>
                 <module>spring-kitchensink-basic</module>
+                <module>spring-kitchensink-controlleradvice</module>
+                <module>spring-kitchensink-matrixvariables</module>
                 <module>spring-kitchensink-springmvctest</module>
+                <module>spring-petclinic</module>
                 <module>spring-resteasy</module>
+                <module>tasks</module>
                 <module>tasks-jsf</module>
                 <module>tasks-rs</module>
                 <module>temperature-converter</module>
@@ -468,6 +472,7 @@
                 <module>websocket-client</module>
                 <module>websocket-endpoint</module>
                 <module>websocket-hello</module>
+                <module>xml-dom4j</module>
                 <module>xml-jaxp</module>
             </modules>
         </profile>
@@ -543,10 +548,13 @@
                 <module>kitchensink-angularjs/functional-tests</module>
                 <module>spring-greeter/functional-tests</module>
                 <module>spring-kitchensink-basic/functional-tests</module>
+                <module>spring-kitchensink-controlleradvice/functional-tests</module>
                 <module>spring-kitchensink-springmvctest/functional-tests</module>
+                <module>spring-kitchensink-matrixvariables/functional-tests</module>
+                <module>spring-petclinic/functional-tests</module>
             </modules>
         </profile>
-
+      
         <profile>
             <!-- An optional Arquillian testing profile that executes tests in your JBoss EAP instance.
                  This profile will start a new JBoss EAP instance, and execute the test, shutting it down when done.
@@ -608,6 +616,39 @@
             </build>
         </profile>
         <profile>
+            <id>root-dir</id>
+            <activation>
+                <file>
+                    <exists>${basedir}/../docs.properties</exists>
+                </file>
+            </activation>
+            <properties>
+                <root.dir>${basedir}/../</root.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>root-dir2</id>
+            <activation>
+                <file>
+                    <exists>${basedir}/../../docs.properties</exists>
+                </file>
+            </activation>
+            <properties>
+                <root.dir>${basedir}/../../</root.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>root-dir3</id>
+            <activation>
+                <file>
+                    <exists>${basedir}/../../../docs.properties</exists>
+                </file>
+            </activation>
+            <properties>
+                <root.dir>${basedir}/../../../</root.dir>
+            </properties>
+        </profile>
+        <profile>
             <id>docs</id>
             <activation>
                 <property>
@@ -616,19 +657,50 @@
             </activation>
             <modules>
                 <!-- not real maven projects, but here for centralized mgmt and docs -->
+                <module>forge-from-scratch</module>
+                <module>h2-console</module>
                 <module>jts-distributed-crash-rec</module>
                 <module>messaging-clustering</module>
             </modules>
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>${version.resources.plugin}</version>
+                        <executions>
+                            <execution>
+                                <id>filter-markdown</id>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/docs</outputDirectory>
+                                    <filters>
+                                        <filter>${root.dir}/docs.properties</filter>
+                                    </filters>
+                                    <resources>
+                                        <resource>
+                                            <directory>${basedir}</directory>
+                                            <includes>
+                                                <include>*.md</include>
+                                            </includes>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.wildfly.maven.plugins</groupId>
                         <artifactId>quickstart-documentation-plugin</artifactId>
-                        <version>${version.org.wildfly.quickstarts.documentation.plugin}</version>
+                        <version>1.0.1</version>
                         <inherited>false</inherited>
                         <configuration>
                             <rootDirectory>.</rootDirectory>
-                            <targetDocument>README.adoc</targetDocument>
+                            <targetDocument>${project.build.directory}/docs/README.md</targetDocument>
                         </configuration>
                         <executions>
                             <execution>
@@ -641,50 +713,43 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.asciidoctor</groupId>
-                        <artifactId>asciidoctor-maven-plugin</artifactId>
-                        <version>1.5.6</version>
-                        <configuration>
-                            <backend>html5</backend>
-                            <attributes>
-                                <artifactId>${project.artifactId}</artifactId>
-                            </attributes>
-                            <resources>
-                                <resource>
-                                    <directory>.</directory>
-                                    <excludes>
-                                        <exclude>**/*</exclude>
-                                    </excludes>
-                                </resource>
-                            </resources>
-                            <doctype>article</doctype>
-                            <sourceDirectory>.</sourceDirectory>
-                            <sourceDocumentName>README.adoc</sourceDocumentName>
-                            <outputFile>README.html</outputFile>
-                        </configuration>
+                        <groupId>com.vladsch.flexmark</groupId>
+                        <artifactId>markdown-page-generator-plugin</artifactId>
+                        <version>0.22.4</version>
                         <executions>
                             <execution>
-                                <id>output-html</id>
+                                <id>generate-html</id>
                                 <phase>generate-resources</phase>
                                 <goals>
-                                    <goal>process-asciidoc</goal>
+                                    <goal>generate</goal>
                                 </goals>
                             </execution>
+                            <execution>
+                                <!-- this is special case so we can handle only root README with TOC-->
+                                <id>generate-root-html</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <inherited>false</inherited>
+                                <configuration>
+                                    <inputDirectory>${project.basedir}</inputDirectory>
+                                </configuration>
+                            </execution>
                         </executions>
+                        <configuration>
+                            <inputDirectory>${project.build.directory}/docs</inputDirectory>
+                            <outputDirectory>${project.basedir}</outputDirectory>
+                            <defaultTitle>${project.name}</defaultTitle>
+                            <inputEncoding>UTF-8</inputEncoding>
+                            <headerHtmlFile>${root.dir}/dist/header.html</headerHtmlFile>
+                            <footerHtmlFile>${root.dir}/dist/footer.html</footerHtmlFile>
+                            <pegdownExtensions>TABLES,TOC,AUTOLINKS,STRIKETHROUGH,ATXHEADERSPACE,FENCED_CODE_BLOCKS,ANCHORLINKS,RELAXEDHRULES</pegdownExtensions>
+                            <transformRelativeMarkdownLinks>true</transformRelativeMarkdownLinks>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-        <profile>
-            <id>adoc</id>
-            <activation>
-                <file>
-                    <missing>README.adoc</missing>
-                </file>
-            </activation>
-            <properties>
-                <asciidoctor.skip>true</asciidoctor.skip>
-            </properties>
         </profile>
         <profile>
             <id>dist</id>
@@ -696,80 +761,39 @@
             <modules>
                 <module>dist</module>
             </modules>
-        </profile>
-        <profile>
-            <!-- When built in OpenShift the 'openshift' profile will be
-                used when invoking mvn. -->
-            <!-- Use this profile for any OpenShift specific customization
-                your app will ne    ed. -->
-            <!-- By default that is to put the resulting archive into the
-                'deployments' folder. -->
-            <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
-            <id>openshift</id>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <version>${version.war.plugin}</version>
-                        <configuration>
-                            <warName>ROOT</warName>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>${version.resources.plugin}</version>
                         <executions>
                             <execution>
-                                <id>attach-sources</id>
-                                <phase>none</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>publish-rh-developer</id>
-            <activation>
-                <property>
-                    <name>publish-developer-website</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.wildfly.maven.plugins</groupId>
-                        <artifactId>quickstart-documentation-plugin</artifactId>
-                        <version>${version.org.wildfly.quickstarts.documentation.plugin}</version>
-                        <inherited>false</inherited>
-                        <executions>
-                            <execution>
+                                <id>copy-processed-resources</id>
                                 <phase>process-resources</phase>
                                 <goals>
-                                    <goal>drupal-push</goal>
+                                    <goal>copy-resources</goal>
                                 </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}</outputDirectory>
+                                    <filters>
+                                        <filter>${root.dir}/docs.properties</filter>
+                                    </filters>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.directory}/docs</directory>
+                                            <includes>
+                                                <include>*.md</include>
+                                            </includes>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
                             </execution>
                         </executions>
-                        <configuration>
-                            <drupalUrl>${jboss.developer.drupal.url}</drupalUrl>
-                            <serverName>rh-drupal</serverName>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-        <profile>
-            <id>publish-rh-developer-prod</id>
-            <activation>
-                <property>
-                    <name>publish-developer-website</name>
-                    <value>prod</value>
-                </property>
-            </activation>
-            <properties>
-                <jboss.developer.drupal.url>http://developer-rhdp-drupal.web.prod.ext.phx2.redhat.com/</jboss.developer.drupal.url>
-            </properties>
         </profile>
     </profiles>
 </project>
